@@ -1,0 +1,48 @@
+---
+- hosts: all
+  become: yes # become super user
+  gather_facts: yes
+  vars:
+    user_name: nsimba
+    collor: red
+  tasks:
+    - name: install passwd package
+      apt:
+        name: passwd
+        state: present
+      when: ansible_distribution not in "Debian, Ubuntu"
+      tags:
+        - app1
+    - name: create group
+      group:
+        name: cloudteama
+        state: present
+ #     when: ansible_distribution_major_version < 9
+    - name: crease user
+      user:
+        name: "{{ user_name }}"
+        comment: John Doe
+        uid: 1040
+        group: admin
+- hosts: db
+  become: yes
+  tasks:
+    - name: install apache
+      apt: 
+        name: apache2
+        state: present
+    - name: start apache service
+      service:
+        name: apache2
+        state: started
+    - name: Enable service apache2
+      service:
+        name: apache2
+        enabled: yes
+      tags:
+        - service
+    - name: copy index file
+      copy:
+        src: index.html
+        dest: /var/www/html/
+        mode: '0644'

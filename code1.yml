@@ -1,0 +1,15 @@
+---
+# play number 1
+- hosts: all
+  gather_facts: false
+ # ignore_errors: true
+  tasks:
+    - name: check the date
+      command: dateerergg
+      ignore_errors: true
+    - name: check the uptime
+      command: |
+        uptime
+        date
+        nproc
+
