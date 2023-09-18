@@ -1,0 +1,13 @@
+---
+- hosts: db
+  become: true
+  tasks:
+    - name: install vim
+      apt:
+        name: vim
+        state: present
+    - name: create a file called nsimba.sh in user home directory
+      file:
+        path: /home/ubuntu/nsimba.sh
+        state: absent
+        mode: u=rw,g=r,o=r
